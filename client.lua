@@ -62,33 +62,29 @@ AddEventHandler('onResourceStop', function(resource)
 end)
 
 function openBetMenu(npcPed)
-    local playerPed = PlayerPedId()
-    local playerCoords = GetEntityCoords(playerPed)
-    local npcCoords = GetEntityCoords(npcPed)
+    local input = lib.inputDialog('Place Your Bet', {
+        {type = 'number', label = 'Bet Amount', min = Config.minBet, max = Config.maxBet}
+    })
 
-    local distance = #(playerCoords - npcCoords)
+    if input and input[1] then
+        local betAmount = tonumber(input[1])
 
-    if distance <= 5.0 then
-        local input = lib.inputDialog('Place Your Bet', {
-            {type = 'number', label = 'Bet Amount', min = Config.minBet, max = Config.maxBet}
-        })
-
-        if input then
-            local betAmount = tonumber(input[1])
-            if betAmount then
-                QBCore.Functions.TriggerCallback('tropic-dicegame:checkBet', function(canBet)
-                    if canBet then
-                        startDiceGame(betAmount, npcPed)
-                    else
-                        lib.notify({title = 'Not enough money!', type = 'error'})
-                    end
-                end, betAmount)
-            end
+        if betAmount and betAmount >= Config.minBet and betAmount <= Config.maxBet then
+            QBCore.Functions.TriggerCallback('tropic-dicegame:checkBet', function(canBet)
+                if canBet then
+                    startDiceGame(betAmount, npcPed)
+                else
+                    lib.notify({title = 'Not enough money!', type = 'error'})
+                end
+            end, betAmount)
+        else
+            lib.notify({title = 'Invalid Bet Amount!', type = 'error'})
         end
     else
-        lib.notify({title = "You're too far away from the Opponent!", type = "error"})
+        lib.notify({title = 'Bet was not placed!', type = 'error'})
     end
 end
+
 
 function rollDice()
     return math.random(2, 12)
