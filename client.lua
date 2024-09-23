@@ -51,11 +51,13 @@ end)
 
 AddEventHandler('onResourceStop', function(resource)
     if resource == GetCurrentResourceName() then
-        for _, ped in pairs(spawnedNPCs) do
-            if DoesEntityExist(ped) then
-                DeleteEntity(ped)
-            end
+        for _, npcData in pairs(spawnedNPCs) do
+            if npcData and npcData.ped and DoesEntityExist(npcData.ped) then
+                DeleteEntity(npcData.ped)
+              else
+           end
         end
+        spawnedNPCs = {}
     end
 end)
 
