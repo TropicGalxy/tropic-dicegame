@@ -13,5 +13,3 @@ a simple way to gamble your life savings away!
 
 [ox_target](https://github.com/overextended/ox_lib)
 
-
-[![Github All Releases](https://img.shields.io/github/downloads/tropicgalxy/tropic-dicegame/total.svg)]()
